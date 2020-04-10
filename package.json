@@ -29,11 +29,11 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --env=prod --port=55360 --daemon --title=egg-server-realName",
+    "start": "egg-scripts start --env=prod --port=55362 --daemon --title=egg-server-realName",
     "stop": "egg-scripts stop --title=egg-server-realName",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
-    "test": "egg-scripts start --env=test --port=55360 --daemon --title=egg-server-realName",
+    "test": "egg-scripts start --env=test --port=55362 --daemon --title=egg-server-realName",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
