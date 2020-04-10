@@ -1,0 +1,52 @@
+{
+  "name": "realName",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "egg": {
+    "declarations": true
+  },
+  "dependencies": {
+    "egg": "^2.15.1",
+    "egg-redis": "^2.4.0",
+    "egg-scripts": "^2.11.0",
+    "egg-sequelize": "^5.2.1",
+    "kafka-node": "^5.0.0",
+    "node-rsa": "^1.0.8",
+    "node-uuid": "^1.4.8",
+    "pg": "^8.0.0"
+  },
+  "devDependencies": {
+    "autod": "^3.0.1",
+    "autod-egg": "^1.1.0",
+    "egg-bin": "^4.11.0",
+    "egg-ci": "^1.11.0",
+    "egg-mock": "^3.21.0",
+    "eslint": "^5.13.0",
+    "eslint-config-egg": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "start": "egg-scripts start --env=prod --port=55360 --daemon --title=egg-server-realName",
+    "stop": "egg-scripts stop --title=egg-server-realName",
+    "dev": "egg-bin dev",
+    "debug": "egg-bin debug",
+    "test": "egg-scripts start --env=test --port=55360 --daemon --title=egg-server-realName",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod"
+  },
+  "ci": {
+    "version": "10"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "JV",
+  "license": "MIT"
+}
