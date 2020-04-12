@@ -45,9 +45,15 @@ function rsa_encrypt(data, public_key) {
 
 // rsa私钥解密
 function rsa_decrypt(data, private_key) {
-    const nodersa = new NodeRSA(private_key);
-    const decrypted = nodersa.decrypt(data, 'utf8');
-    return decrypted;
+    try {
+        const nodersa = new NodeRSA(private_key);
+        const decrypted = nodersa.decrypt(data, 'utf8');
+        return decrypted;
+    } catch (error) {
+        throw {
+            errorType: 'decrypt',
+        }
+    }
 }
 
 //md5加密(32位大写密文)
