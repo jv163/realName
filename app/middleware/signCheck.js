@@ -67,6 +67,12 @@ module.exports = options => {
             // console.log('data_obj', data_obj)
         } catch (error) {
             ctx.logger.error('mid=>signCheck:', error);
+            if (error.errorType === 'decrypt') {
+                ctx.body = {
+                    code: 13001,
+                    message: "数据秘钥错误",
+                }
+            }
             ctx.body = {
                 code: 500,
                 message: 'Server error'
