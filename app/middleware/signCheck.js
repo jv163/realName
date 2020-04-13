@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-11-28 17:17:00
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 17:56:44
+ * @LastEditTime: 2020-04-13 18:46:11
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 
@@ -43,6 +43,11 @@ module.exports = options => {
                     secret_id,
                 }
             })
+
+            if (company_info.length <= 0) throw {
+                errorType: 'decrypt',
+            }
+
             const data_check_str = data + company_info[0].public_key;
             const data_check = crypto.md5_32_capitalized(data_check_str);
             //----测试
@@ -70,8 +75,9 @@ module.exports = options => {
             if (error.errorType === 'decrypt') {
                 ctx.body = {
                     code: 13001,
-                    message: "数据秘钥错误",
+                    message: "秘钥错误",
                 }
+                return
             }
             ctx.body = {
                 code: 500,
