@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 08:53:10
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 16:46:41
+ * @LastEditTime: 2020-04-13 18:11:44
  */
 'use strict';
 const moment = require('moment');
@@ -73,8 +73,6 @@ module.exports = app => {
         }
     }, {
         timestamps: true,
-        createdAt: 'create_time',
-        updatedAt: 'update_time',
     });
 
     return ProcessInfos;

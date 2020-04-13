@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 08:53:10
  * @LastEditors: JV
- * @LastEditTime: 2020-04-07 14:33:36
+ * @LastEditTime: 2020-04-13 18:11:16
  */
 'use strict';
 const moment = require('moment');
@@ -87,12 +87,6 @@ module.exports = app => {
                 return moment(this.getDataValue('create_time')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
-        // "update_time": {
-        //     type: DATE,
-        //     get() {
-        //         return moment().format('YYYY-MM-DD HH:mm:ss');
-        //     },
-        // },
         "description": {
             type: TEXT,
             field: "description"
@@ -161,8 +155,6 @@ module.exports = app => {
         },
     }, {
         timestamps: true,
-        createdAt: 'create_time',
-        updatedAt: 'update_time',
     });
 
     return RealNames;

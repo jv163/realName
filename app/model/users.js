@@ -28,8 +28,6 @@ module.exports = app => {
         },
     }, {
         timestamps: true,
-        createdAt: 'create_time',
-        updatedAt: 'update_time',
     });
 
     return Users;
