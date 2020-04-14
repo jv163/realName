@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 10:58:02
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 15:57:11
+ * @LastEditTime: 2020-04-14 13:14:42
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 const Service = require('egg').Service;
@@ -15,7 +15,9 @@ class ReceiveDataService extends Service {
 
     async createReceiveData(docs) {
         try {
-            return await this.ctx.model.RealNames.create(docs);
+            return await this.ctx.model.RealNames.create(docs, {
+                returning: false
+            });
         } catch (error) {
             throw {
                 errorPosition: 'service:receiveData-createReceiveData error',
@@ -32,7 +34,9 @@ class ReceiveDataService extends Service {
 
     async createProcessInfos(docs) {
         try {
-            return await this.ctx.model.ProcessInfos.create(docs);
+            return await this.ctx.model.ProcessInfos.create(docs, {
+                returning: false
+            });
         } catch (error) {
             throw {
                 errorPosition: 'service:receiveData-createProcessInfos error',
