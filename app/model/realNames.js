@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 08:53:10
  * @LastEditors: JV
- * @LastEditTime: 2020-04-13 18:11:16
+ * @LastEditTime: 2020-04-15 11:02:46
  */
 'use strict';
 const moment = require('moment');
@@ -85,6 +85,12 @@ module.exports = app => {
             type: DATE,
             get() {
                 return moment(this.getDataValue('create_time')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        "timestamp": {
+            type: DATE,
+            get() {
+                return moment(this.getDataValue('timestamp')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         "description": {

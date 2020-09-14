@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-04-10 15:27:39
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 16:46:01
+ * @LastEditTime: 2020-05-29 15:51:39
  */
 const Subscription = require('egg').Subscription;
 
@@ -24,16 +24,24 @@ class ProcessInfo extends Subscription {
                 for (let i = 1; i <= frequency; i++) {
                     const processInfo_data = await this.ctx.app.redis.rpop('processInfo');
                     if (!processInfo_data) break;
-                    console.log('111', processInfo_data)
-                    await this.ctx.service.receiveData.createProcessInfos(JSON.parse(processInfo_data));
+                    var docs = JSON.parse(processInfo_data);
+                    //检查时间格式
+                    if (!docs.create_time) docs.create_time = undefined;
+                    await this.ctx.service.receiveData.createProcessInfos(docs);
+                    await this.ctx.app.redis.lpush('processInfoPush', processInfo_data);
                 }
             }
         } catch (error) {
             this.ctx.logger.error(error);
-            this.ctx.body = {
-                success: false,
-                code: 500,
-                message: '系统错误',
+            try {
+                await this.ctx.service.failLog.createFailLog({
+                    company_name: docs.company_name,
+                    delivery_no: docs.delivery_no,
+                    data_type: 'processInfo',
+                    error_info: JSON.stringify(error),
+                })
+            } catch (error) {
+                this.ctx.logger.error(error);
             }
         }
     }

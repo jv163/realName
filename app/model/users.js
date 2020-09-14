@@ -1,10 +1,9 @@
 /*
  * @Date: 2019-12-02 08:53:10
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 17:04:40
+ * @LastEditTime: 2020-04-15 16:46:36
  */
 'use strict';
-const moment = require('moment');
 
 module.exports = app => {
     const {

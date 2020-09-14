@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-11-29 10:58:53
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 16:35:55
+ * @LastEditTime: 2020-04-16 09:19:29
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 'use strict';
@@ -37,7 +37,7 @@ function create_rsa_key() {
 
 function rsa_encrypt(data, public_key) {
     const nodersa = new NodeRSA(public_key);
-    // nodersa.setOptions({ encryptionScheme: 'pkcs1' });
+    nodersa.setOptions({ encryptionScheme: 'pkcs1' });
     const encrypted = nodersa.encrypt(data, 'base64');
     return encrypted;
 }
@@ -47,6 +47,7 @@ function rsa_encrypt(data, public_key) {
 function rsa_decrypt(data, private_key) {
     try {
         const nodersa = new NodeRSA(private_key);
+        nodersa.setOptions({ encryptionScheme: 'pkcs1' });
         const decrypted = nodersa.decrypt(data, 'utf8');
         return decrypted;
     } catch (error) {

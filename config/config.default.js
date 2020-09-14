@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-04-07 10:11:49
  * @LastEditors: JV
- * @LastEditTime: 2020-04-10 16:57:32
+ * @LastEditTime: 2020-04-24 15:40:45
  */
 /* eslint valid-jsdoc: "off" */
 
@@ -26,6 +26,7 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = ['checkLogin'];
 
+  //postgresql config
   config.sequelize = {
     dialect: 'postgres',
     host: '125.77.26.136',
@@ -43,7 +44,7 @@ module.exports = appInfo => {
       password: '',
       db: 0,
     },
-  }
+  };
 
   //日志路径
   config.logger = {

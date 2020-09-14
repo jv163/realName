@@ -15,9 +15,7 @@ module.exports = options => {
         try {
             //参数校验
             if (!ctx.request.body.secret_id ||
-                !ctx.request.body.sign ||
-                !ctx.request.body.data ||
-                typeof (ctx.request.body.data) != 'string'
+                !ctx.request.body.sign
             ) {
                 ctx.body = {
                     code: 10000,
@@ -27,8 +25,7 @@ module.exports = options => {
             }
             const {
                 secret_id,
-                sign,
-                data
+                sign
             } = ctx.request.body;
             var company_info = await ctx.app.redis.get(`company_info_${secret_id}`);
 
@@ -49,16 +46,13 @@ module.exports = options => {
                     company_info = company_infos[0];
                     await ctx.app.redis.set(`company_info_${secret_id}`, JSON.stringify(company_infos[0]));
                 }
-            }else{
+            } else {
                 company_info = JSON.parse(company_info)
             }
 
-            const public_key = company_info.public_key;
-            const data_check_str = data + public_key;
-            // console.log('public_key:', public_key);
-            // console.log('md5_str:', data_check_str);
-            const data_check = crypto.md5_32_capitalized(data_check_str);
-            // console.log('md5_crypto_str:', data_check);
+            const private_key = company_info.private_key;
+            const data_check = crypto.md5_32_capitalized(private_key);
+            console.log('data_check:', data_check);
             if (sign != data_check) {
                 ctx.body = {
                     code: 13002,
@@ -66,35 +60,8 @@ module.exports = options => {
                 }
                 return
             }
-            //数据转化
-            const data_obj = crypto.rsa_decrypt(data, company_info.private_key);
-            try {
-                ctx.request.body.data_obj = JSON.parse(data_obj);
-                ctx.request.body.data_obj.company_name = company_info.company_name;
-            } catch (error) {
-                throw {
-                    errorType: 'pushData',
-                }
-            }
-
-            //----测试
-            // console.log('data_obj', JSON.parse(data_obj))
         } catch (error) {
             ctx.logger.error('mid=>signCheck:', error);
-            if (error.errorType === 'decrypt') {
-                ctx.body = {
-                    code: 13003,
-                    message: "RSA秘钥错误或加密方式有误",
-                }
-                return
-            }
-            if (error.errorType === 'pushData') {
-                ctx.body = {
-                    code: 13004,
-                    message: "推送数据格式有误",
-                }
-                return
-            }
             ctx.body = {
                 code: 500,
                 message: 'Server error'

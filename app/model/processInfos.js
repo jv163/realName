@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 08:53:10
  * @LastEditors: JV
- * @LastEditTime: 2020-04-13 18:11:44
+ * @LastEditTime: 2020-05-22 16:16:17
  */
 'use strict';
 const moment = require('moment');
@@ -21,6 +21,12 @@ module.exports = app => {
             type: DATE,
             get() {
                 return moment(this.getDataValue('create_time')).format('YYYY-MM-DD HH:mm:ss');
+            }
+        },
+        "timestamp": {
+            type: DATE,
+            get() {
+                return moment(this.getDataValue('timestamp')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         "process_status": {
@@ -70,7 +76,11 @@ module.exports = app => {
         "district_address": {
             type: TEXT,
             field: "district_address"
-        }
+        },
+        "company_name": {
+            type: TEXT,
+            field: "company_name"
+        },
     }, {
         timestamps: true,
     });

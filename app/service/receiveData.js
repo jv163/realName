@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 10:58:02
  * @LastEditors: JV
- * @LastEditTime: 2020-04-14 13:14:42
+ * @LastEditTime: 2020-04-24 17:24:03
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 const Service = require('egg').Service;
@@ -21,6 +21,50 @@ class ReceiveDataService extends Service {
         } catch (error) {
             throw {
                 errorPosition: 'service:receiveData-createReceiveData error',
+                errorInfo: error,
+            }
+        }
+    }
+
+    /**
+     * 更新实名数据
+     * @param docs 更新字段信息
+     * @param where 更新条件
+     * @returns 创建结果
+     */
+
+    async updateReceiveData(docs, where) {
+        try {
+            return await this.ctx.model.RealNames.update(docs, where);
+        } catch (error) {
+            throw {
+                errorPosition: 'service:receiveData-updateReceiveData error',
+                errorInfo: error,
+            }
+        }
+    }
+
+    /**
+     * 查询实名数据
+     * @param where 查询条件
+     * @returns 创建结果
+     */
+
+    async findReceiveData(where) {
+        try {
+            const data = await this.ctx.model.RealNames.findAll(where);
+            if (data.length > 0) {
+                const reult = [];
+                for (let itme of data) {
+                    reult.push(itme.dataValues)
+                }
+                return reult
+            } else {
+                return []
+            }
+        } catch (error) {
+            throw {
+                errorPosition: 'service:receiveData-findReceiveData error',
                 errorInfo: error,
             }
         }

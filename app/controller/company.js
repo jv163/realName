@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-04-07 10:11:49
  * @LastEditors: JV
- * @LastEditTime: 2020-04-08 14:34:40
+ * @LastEditTime: 2020-05-18 10:33:50
  */
 'use strict';
 
@@ -29,7 +29,8 @@ class CompanyController extends Controller {
       const company_name = ctx.request.body.company_name;
       const isexist = await ctx.service.company.findCompany({
         where: {
-          company_name
+          company_name,
+          status: true,
         }
       })
 
@@ -42,10 +43,10 @@ class CompanyController extends Controller {
       }
 
       const secret_id = uuid.v4().replace(/-/g, '');
-      const  {
+      const {
         public_key,
         private_key
-    } = crypto.create_rsa_key();
+      } = crypto.create_rsa_key();
       await ctx.service.company.createCompany({
         company_name,
         public_key,
@@ -61,6 +62,45 @@ class CompanyController extends Controller {
           public_key,
         },
         message: '企业创建成功'
+      }
+      return
+    } catch (error) {
+      this.ctx.logger.error(error);
+      this.ctx.body = {
+        success: false,
+        code: 500,
+        message: '系统错误',
+      }
+    }
+  }
+
+  async find() {
+    try {
+      const {
+        ctx
+      } = this;
+
+      const search = ctx.request.body.search || '';
+      const Op = this.app.Sequelize.Op;
+      const company_info = await ctx.service.company.findCompany({
+        where: {
+          [Op.or]: [{
+            company_name: {
+              [Op.like]: `%${search}%`
+            },
+
+          }, {
+            secret_id: {
+              [Op.like]: `%${search}%`
+            }
+          }, ],
+          status: true,
+        }
+      })
+      ctx.body = {
+        code: 200,
+        data: company_info,
+        message: '企业查询成功'
       }
       return
     } catch (error) {
