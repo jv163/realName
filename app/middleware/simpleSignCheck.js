@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-11-28 17:17:00
  * @LastEditors: JV
- * @LastEditTime: 2020-05-22 16:45:51
+ * @LastEditTime: 2020-09-15 10:47:43
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 
@@ -14,7 +14,7 @@ module.exports = options => {
     return async function signCheck(ctx, next) {
         try {
             //参数校验
-            if (!ctx.request.body.secret_id ||
+            if (!ctx.request.body.company_name ||
                 !ctx.request.body.sign
             ) {
                 ctx.body = {
@@ -24,34 +24,29 @@ module.exports = options => {
                 return
             }
             const {
-                secret_id,
+                company_name,
                 sign
             } = ctx.request.body;
-            var company_info = await ctx.app.redis.get(`company_info_${secret_id}`);
 
-            if (!company_info) {
-                var company_infos = await ctx.service.company.findCompany({
-                    where: {
-                        secret_id,
-                    }
-                })
 
-                if (company_infos.length <= 0) {
-                    ctx.body = {
-                        code: 13001,
-                        message: "secret_id无效或错误",
-                    }
-                    return
-                } else {
-                    company_info = company_infos[0];
-                    await ctx.app.redis.set(`company_info_${secret_id}`, JSON.stringify(company_infos[0]));
+
+            const company_infos = await ctx.service.company.findCompany({
+                where: {
+                    company_name,
                 }
-            } else {
-                company_info = JSON.parse(company_info)
+            })
+
+            if (company_infos.length <= 0) {
+                ctx.body = {
+                    code: 13001,
+                    message: "没有限权",
+                }
+                return
             }
 
-            const private_key = company_info.private_key;
-            const data_check = crypto.md5_32_capitalized(private_key);
+
+            const secret_id = company_infos[0].secret_id;
+            const data_check = crypto.md5_32_capitalized(secret_id);
             console.log('data_check:', data_check);
             if (sign != data_check) {
                 ctx.body = {
