@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 10:58:02
  * @LastEditors: JV
- * @LastEditTime: 2020-04-24 17:24:03
+ * @LastEditTime: 2020-09-15 11:01:55
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 const Service = require('egg').Service;
@@ -62,6 +62,24 @@ class ReceiveDataService extends Service {
             } else {
                 return []
             }
+        } catch (error) {
+            throw {
+                errorPosition: 'service:receiveData-findReceiveData error',
+                errorInfo: error,
+            }
+        }
+    }
+
+
+    /**
+     * 查询实名数据
+     * @param where 查询条件
+     * @returns 创建结果
+     */
+
+    async findReceiveCount(where) {
+        try {
+            return await this.ctx.model.RealNames.count(where);
         } catch (error) {
             throw {
                 errorPosition: 'service:receiveData-findReceiveData error',

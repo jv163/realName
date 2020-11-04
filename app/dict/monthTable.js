@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-11-29 10:48:57
  * @LastEditors: JV
- * @LastEditTime: 2020-05-22 16:21:19
+ * @LastEditTime: 2020-09-15 11:17:34
  */
 
 module.exports = {
@@ -16,6 +16,7 @@ module.exports = {
         CREATE INDEX "real_names_${month}_s_sid" ON "real_names_${month}" USING btree ("s_sid");
         CREATE INDEX "real_names_${month}_s_phone" ON "real_names_${month}" USING btree ("s_phone");
         CREATE INDEX "real_names_${month}_r_phone" ON "real_names_${month}" USING btree ("r_phone");
+        CREATE INDEX "real_names_${month}_create_time" ON "real_names_${month}" USING btree ("create_time");
         ALTER TABLE real_names_${month} ADD CONSTRAINT real_names_${month}_check_date_key  CHECK (created_at >= '${month1}'::timestamptz);  
         CREATE
             OR REPLACE RULE real_names_${month}_created_at_rule AS ON INSERT TO real_names

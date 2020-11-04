@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-04-07 10:11:49
  * @LastEditors: JV
- * @LastEditTime: 2020-05-29 15:39:48
+ * @LastEditTime: 2020-09-15 11:21:42
  */
 'use strict';
 
@@ -140,12 +140,20 @@ class ReceiveDataController extends Controller {
         ctx
       } = this;
 
-      const search = ctx.request.body.search || ''
-      const limit = ctx.request.body.limit || 20;
-      const page = ctx.request.body.page || 1;
+      if (!ctx.request.body.search) {
+        ctx.body = {
+          code: 10000,
+          message: "搜索条件不能为空"
+        };
+        return
+      }
+
+      const search = ctx.request.body.search,
+        limit = ctx.request.body.limit || 20,
+        page = ctx.request.body.page || 1;
 
       const Op = this.app.Sequelize.Op;
-      const data = await ctx.service.receiveData.findReceiveData({
+      const conditions = {
         where: {
           [Op.or]: [{
             delivery_no: search,
@@ -162,7 +170,9 @@ class ReceiveDataController extends Controller {
         ],
         limit,
         offset: limit * (page - 1),
-      }, )
+      }
+      const data = await ctx.service.receiveData.findReceiveData(conditions);
+      const total = await ctx.service.receiveData.findReceiveCount(conditions);
 
       for (let i of data) {
         delete i.createdAt;
@@ -178,7 +188,10 @@ class ReceiveDataController extends Controller {
       ctx.body = {
         success: true,
         code: 200,
-        data,
+        data: {
+          data,
+          total,
+        },
         message: '查询成功'
       }
       return

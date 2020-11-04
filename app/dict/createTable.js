@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-11-29 10:48:57
  * @LastEditors: JV
- * @LastEditTime: 2020-05-22 16:19:14
+ * @LastEditTime: 2020-09-15 11:17:00
  */
 
 module.exports = {
@@ -54,6 +54,7 @@ module.exports = {
         CREATE INDEX "real_names_s_sid" ON "real_names" USING btree ("s_sid");
         CREATE INDEX "real_names_s_phone" ON "real_names" USING btree ("s_phone");
         CREATE INDEX "real_names_r_phone" ON "real_names" USING btree ("r_phone");
+        CREATE INDEX "real_names_create_time" ON "real_names" USING btree ("create_time");
         `,
 
     "process_infos": `
