@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-12-02 10:58:02
  * @LastEditors: JV
- * @LastEditTime: 2020-04-28 15:10:40
+ * @LastEditTime: 2020-12-10 15:53:21
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 const Service = require('egg').Service;
@@ -43,14 +43,8 @@ class DbTableService extends Service {
      * @returns 创建结果
      */
 
-    async createMonthPartitionTable(partition_type) {
+    async createMonthPartitionTable(node, format_node, next_format_node) {
         try {
-            const {
-                node,
-                format_node,
-                next_format_node
-            } = partition_config[partition_type];
-
             const table_names = month_table.table_names;
             for (let table_name of table_names) {
                 this.app.model.query(`select count(*) from pg_class where relname = '${table_name}_${node}';`, {
