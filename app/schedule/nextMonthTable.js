@@ -1,9 +1,11 @@
 /*
  * @Date: 2020-04-10 15:27:39
  * @LastEditors: JV
- * @LastEditTime: 2020-12-10 15:56:43
+ * @LastEditTime: 2020-12-10 16:23:49
  */
 const Subscription = require('egg').Subscription;
+
+const moment = require('moment');
 
 class RealName extends Subscription {
     // 通过 schedule 属性来设置定时任务的执行间隔等配置
@@ -20,8 +22,8 @@ class RealName extends Subscription {
     async subscribe() {
         try {
             const node = moment().add(1, 'months').format('YYYYMM'),
-            format_node = moment().add(1, 'months').format('YYYY-MM-01'),
-            next_format_node = moment().add(2, 'months').format('YYYY-MM-01');
+                format_node = moment().add(1, 'months').format('YYYY-MM-01'),
+                next_format_node = moment().add(2, 'months').format('YYYY-MM-01');
 
             this.ctx.service.dbTable.createMonthPartitionTable(node, format_node, next_format_node)
         } catch (error) {

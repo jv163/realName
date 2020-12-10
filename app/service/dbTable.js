@@ -1,13 +1,12 @@
 /*
  * @Date: 2019-12-02 10:58:02
  * @LastEditors: JV
- * @LastEditTime: 2020-12-10 15:53:21
+ * @LastEditTime: 2020-12-10 17:17:45
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 const Service = require('egg').Service;
 const create_table = require('../dict/createTable');
 const month_table = require('../dict/monthTable');
-const partition_config = require('../dict/partitionConfig');
 
 class DbTableService extends Service {
     /**
