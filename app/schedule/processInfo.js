@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-04-10 15:27:39
  * @LastEditors: JV
- * @LastEditTime: 2020-05-29 15:51:39
+ * @LastEditTime: 2020-12-11 10:17:04
  */
 const Subscription = require('egg').Subscription;
 
@@ -28,7 +28,7 @@ class ProcessInfo extends Subscription {
                     //检查时间格式
                     if (!docs.create_time) docs.create_time = undefined;
                     await this.ctx.service.receiveData.createProcessInfos(docs);
-                    await this.ctx.app.redis.lpush('processInfoPush', processInfo_data);
+                    // await this.ctx.app.redis.lpush('processInfoPush', processInfo_data);
                 }
             }
         } catch (error) {

@@ -1,12 +1,14 @@
 /*
  * @Date: 2019-12-02 10:58:02
  * @LastEditors: JV
- * @LastEditTime: 2020-12-10 17:17:45
+ * @LastEditTime: 2020-12-11 11:39:34
  * @Description: 枢纽天台风很大，但愿代码没有BUG
  */
 const Service = require('egg').Service;
 const create_table = require('../dict/createTable');
 const month_table = require('../dict/monthTable');
+const truncate_table = require('../dict/truncateTable');
+const moment = require('moment');
 
 class DbTableService extends Service {
     /**
@@ -60,6 +62,36 @@ class DbTableService extends Service {
         } catch (error) {
             throw {
                 errorPosition: 'service:dbTable-createMonthPartitionTable error',
+                errorInfo: error,
+            }
+        }
+    }
+
+    /**
+     * 删除表
+     * @param docs 字段信息
+     * @returns 创建结果
+     */
+
+    async truncateTable(node) {
+        try {
+            const table_names = truncate_table.table_names;
+            for (let table_name of table_names) {
+                const truncate_node = moment(node).add(truncate_table[table_name], 'months').format('YYYYMM');
+                this.app.model.query(`select count(*) from pg_class where relname = '${table_name}_${truncate_node}';`, {
+                        type: 'SELECT'
+                    })
+                    .then(projects => {
+                        if (projects[0].count === '1') {
+                            this.app.model.query(`truncate ${table_name}_${truncate_node}`, {
+                                type: 'SELECT'
+                            })
+                        }
+                    });
+            }
+        } catch (error) {
+            throw {
+                errorPosition: 'service:dbTable-truncateTable error',
                 errorInfo: error,
             }
         }
